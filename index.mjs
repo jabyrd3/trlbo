@@ -1,8 +1,9 @@
-let irc = require('irc');
-const Bypasser = require('node-bypasser');
-let Twitter = require('twitter');
-let config = require('./config');
-let Masto = require('mastodon');
+import irc from 'irc';
+import Bypasser from 'node-bypasser';
+import Twitter from 'twitter';
+import config from './config';
+import Masto from 'mastodon';
+
 const M = new Masto({
   access_token: config.masto.token,
   timeout_ms: 60 * 1000,  // optional HTTP request timeout to apply to all requests.
@@ -10,18 +11,18 @@ const M = new Masto({
 });
 console.log('joining', config.chan);
 let last = {};
-let client  = new irc.Client(config.ircs, config.ircn, {
+const client  = new irc.Client(config.ircs, config.ircn, {
   channels: [config.chan]
 });
 
-let tclient = new Twitter({
+const tclient = new Twitter({
   consumer_key: config.ck,
   consumer_secret: config.cs,
   access_token_key: config.atk,
   access_token_secret: config.ats
 });
 
-let params = {screen_name: config.sn};
+const params = {screen_name: config.sn};
 
 // grab the twet
 const getTweet = (id) => {
@@ -54,7 +55,7 @@ const twit = (m) => {
   });
 };
 // post to mastodon
-mastPost = (text) =>
+const mastPost = (text) =>
   M.post('statuses', {
     status: text
   })
@@ -149,3 +150,5 @@ client.addListener('message', (f,t,m) => {
     mastPost(m.slice('toot'.length + 1, m.length));
   }
 });
+process.on('unhandledRejection', console.log)
+process.on('uncaughtException', console.log)
