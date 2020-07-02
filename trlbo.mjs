@@ -41,6 +41,7 @@ class Trlbo{
 
   }
   async reload(){
+    console.log('reloading');
     this.irc.removeListener('message', this.handler)
     this.handler = eval(await read('./brain.mjs', 'utf8')).bind(this);
     this.listener = this.irc.addListener('message', this.handler);

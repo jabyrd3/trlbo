@@ -1,0 +1,6 @@
+- set up webhook => receiver
+- figure out why this undefineds: 
+  - https://twitter.com/classiclib3ral/status/1278372035945730048
+  - https://twitter.com/fuckpiiiar/status/1278433319991074816?s=21
+- make brain a class
+- add in masto unpacking
