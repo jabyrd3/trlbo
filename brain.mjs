@@ -16,7 +16,7 @@ const getTweet = (id, thus) => {
       .catch(e => console.log(e));
   });
 };
-  // put a twit
+// put a twit
 const twit = (m, thus) => {
   console.log('twurting', m);
   return new Promise((res, rej) => {
@@ -39,20 +39,20 @@ const twit = (m, thus) => {
     getTweet(m.slice(m.indexOf('status/') + 7, m.indexOf('?') !== -1 ? m.indexOf('?') : m.length), this)
       .then(m => {
         // look for links
-        var compiled = m.slice();
-        if (m.indexOf('t.co') > -1){
-          var sliceIndex = m.length - m.indexOf('https://t.co');
-          console.log(-sliceIndex, m.slice(-sliceIndex));
-          new Bypasser(m.slice(-sliceIndex)).decrypt( (err, result) => {
-            err && console.log('tco error', err);
-            console.log(result);
-            compiled = compiled.slice(0, m.indexOf('https://t.co')) + ' ' + result;
-            console.log(compiled);
-            config.blurt && this.irc.say(config.chan, compiled);
-          });
-        } else {
-          config.blurt && this.irc.say(config.chan, compiled);
-        }
+        // var compiled = m.slice();
+        // if (m.indexOf('t.co') > -1){
+        //   var sliceIndex = m.length - m.indexOf('https://t.co');
+        //   console.log(-sliceIndex, m.slice(-sliceIndex));
+        //   new Bypasser(m.slice(-sliceIndex)).decrypt( (err, result) => {
+        //     err && console.log('tco error', err);
+        //     console.log(result);
+        //     compiled = compiled.slice(0, m.indexOf('https://t.co')) + ' ' + result;
+        //     console.log(compiled);
+        //     config.blurt && this.irc.say(config.chan, compiled);
+        //   });
+        // } else {
+          config.blurt && this.irc.say(config.chan, m);
+        // }
       });
   // look for 'reply'
   m.indexOf('treply') === 0 &&
