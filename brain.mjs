@@ -2,7 +2,7 @@ const params = {
   screen_name: 'trlbo',
   tweet_mode: 'extended'
 };
-console.log('brain loadeder');
+console.log('brain loaded');
 const getTweet = (id, thus) => {
   console.log(id);
   return new Promise((res) => {
