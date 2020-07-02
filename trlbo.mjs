@@ -4,6 +4,7 @@ import {watch, readFile} from 'fs';
 import Bypasser from 'node-bypasser';
 import irc from 'irc';
 import Twitter from 'twitter';
+import debounce from 'lodash.debounce';
 
 const read = promisify(readFile);
 
@@ -11,7 +12,7 @@ class Trlbo{
   constructor(config){
     this.start = this.start.bind(this);
     this.stop = this.stop.bind(this);
-    this.reload = this.reload.bind(this);
+    this.reload = debounce(this.reload.bind(this), 1000);
     this.tClient = new Twitter({
       consumer_key: config.ck,
       consumer_secret: config.cs,
