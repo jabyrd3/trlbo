@@ -37,7 +37,7 @@ const twit = (m, thus) => {
   m.indexOf('https://twitter.com') > -1 &&
   config.ignore.indexOf(f) === -1 &&
   m.indexOf('status') > -1 &&
-    getTweet(m.slice(m.indexOf('status/') + 7, m.indexOf('?') !== -1 ? m.indexOf('?') : m.length), this)
+    getTweet(m.slice(m.indexOf('status/') + 7, m.indexOf('?') !== -1 ? m.indexOf('?') : m.length).split(' ')[0], this)
       .then(m => {
         // look for links
         // var compiled = m.slice();
@@ -56,7 +56,7 @@ const twit = (m, thus) => {
         // }
       });
   // look for 'reply'
-  m.indexOf('treply') === 0 &&
+  false && m.indexOf('treply') === 0 &&
   config.ignore.indexOf(f) === -1 &&
   f.indexOf(config.ircn) === -1 &&
   f.indexOf(config.sn) === -1 &&
@@ -64,7 +64,7 @@ const twit = (m, thus) => {
       .then(() => this.irc.say(config.chan, config.ircn + ' got em') && console.log(config.ircn))
       .catch(e => this.irc.say(config.chan, (e[0] && e[0].message) || e));
   // look for twits
-  m.indexOf('ttwit') === 0 &&
+  false && m.indexOf('ttwit') === 0 &&
   config.ignore.indexOf(f) === -1 &&
   f.indexOf(config.ircn) === -1 &&
   f.indexOf(config.sn) === -1 &&
@@ -83,5 +83,4 @@ const twit = (m, thus) => {
   if (m.indexOf('toot') === 0){
     mastPost(m.slice('toot'.length + 1, m.length));
   }
-
 };
