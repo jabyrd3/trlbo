@@ -33,12 +33,12 @@ const twit = (m, thus) => {
 };
 
 (f, t, m) => {
-  console.log('message', f, t, m);
-  m.indexOf('https://twitter.com') > -1 &&
+  // console.log('message', f, t, m)kj
+  t.indexOf('https://twitter.com') > -1 &&
   config.ignore.indexOf(f) === -1 &&
-  m.indexOf('status') > -1 &&
-    getTweet(m.slice(m.indexOf('status/') + 7, m.indexOf('?') !== -1 ? m.indexOf('?') : m.length).split(' ')[0], this)
-      .then(m => {
+  t.indexOf('status') > -1 &&
+    getTweet(t.slice(t.indexOf('status/') + 7, t.indexOf('?') !== -1 ? t.indexOf('?') : t.length).split(' ')[0], this)
+      .then(tweet => {
         // look for links
         // var compiled = m.slice();
         // if (m.indexOf('t.co') > -1){
@@ -52,7 +52,7 @@ const twit = (m, thus) => {
         //     config.blurt && this.irc.say(config.chan, compiled);
         //   });
         // } else {
-          config.blurt && this.irc.say(config.chan, m);
+          config.blurt && this.irc.say(m.args[0], tweet);
         // }
       });
   // look for 'reply'
@@ -72,15 +72,15 @@ const twit = (m, thus) => {
       .then(() => console.log(config.ircn))
       .catch(e => this.irc.say(config.chan, e[0].message || e));
 
-  if (m.indexOf('trlbo blurt on') > -1){
+  if (t.indexOf('trlbo blurt on') > -1){
     console.log('turning blurt on');
     config.blurt = true;
   }
-  if (m.indexOf('trlbo blurt off') > -1){
+  if (t.indexOf('trlbo blurt off') > -1){
     console.log('turning blurt off');
     config.blurt = false;
   }
-  if (m.indexOf('toot') === 0){
+  if (t.indexOf('toot') === 0){
     mastPost(m.slice('toot'.length + 1, m.length));
   }
 };

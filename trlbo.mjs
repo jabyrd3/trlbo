@@ -13,6 +13,7 @@ class Trlbo{
     this.start = this.start.bind(this);
     this.stop = this.stop.bind(this);
     this.reload = debounce(this.reload.bind(this), 1000);
+    this.config = config;
     this.tClient = new Twitter({
       consumer_key: config.ck,
       consumer_secret: config.cs,
@@ -23,7 +24,7 @@ class Trlbo{
     watch('./brain.mjs', this.reload);
     // this.tClient
     this.irc = new irc.Client(config.ircs, config.ircn, {
-      channels: [config.chan]
+      channels: config.chan
     });
     this.irc.addListener('error', (e) => {
       console.log(e);
@@ -36,16 +37,24 @@ class Trlbo{
   }
   async start(){
     this.handler = eval(await read('./brain.mjs', 'utf8')).bind(this);
-    this.listener = this.irc.addListener('message', this.handler);
+    this.config.chan.map(chan => {
+      console.log('addlistener', chan);
+      this[`listener${chan}`] = this.irc.addListener(`message${chan}`, this.handler)
+    });
   }
   stop(){
 
   }
   async reload(){
     console.log('reloading');
-    this.irc.removeListener('message', this.handler)
+    this.config.chan.map(chan => {
+      this.irc.removeListener(`message${chan}`, this.handler);
+    });
     this.handler = eval(await read('./brain.mjs', 'utf8')).bind(this);
-    this.listener = this.irc.addListener('message', this.handler);
+    this.config.chan.map(chan => {
+      console.log('addlistener', chan);
+      this[`listener${chan}`] = this.irc.addListener(`message${chan}`, this.handler)
+    });
   }
 }
 
