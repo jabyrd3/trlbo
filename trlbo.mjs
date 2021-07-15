@@ -1,6 +1,7 @@
 import config from './config.mjs';
 import {promisify} from 'util';
 import {watch, readFile} from 'fs';
+import et from 'html-entities';
 import Bypasser from 'node-bypasser';
 import irc from 'irc';
 import Twitter from 'twitter';
@@ -36,7 +37,7 @@ class Trlbo{
     this.start();
   }
   async start(){
-    this.handler = eval(await read('./brain.mjs', 'utf8')).bind(this);
+    this.handler = eval(await read('./brain.mjs', 'utf8')).bind(this, et.decode);
     this.config.chan.map(chan => {
       console.log('addlistener', chan);
       this[`listener${chan}`] = this.irc.addListener(`message${chan}`, this.handler)
@@ -50,7 +51,7 @@ class Trlbo{
     this.config.chan.map(chan => {
       this.irc.removeListener(`message${chan}`, this.handler);
     });
-    this.handler = eval(await read('./brain.mjs', 'utf8')).bind(this);
+    this.handler = eval(await read('./brain.mjs', 'utf8')).bind(this, et.decode);
     this.config.chan.map(chan => {
       console.log('addlistener', chan);
       this[`listener${chan}`] = this.irc.addListener(`message${chan}`, this.handler)

@@ -9,6 +9,7 @@ const getTweet = (id, thus) => {
     thus.tClient
       .get(`/statuses/show/${id}`, params)
       .then((t) => {
+        console.log('debug foo', t);
         t && console.log('tweet', t.full_text);
         thus.last = t;
         // todo: cache id here for reply with @handle
@@ -32,7 +33,7 @@ const twit = (m, thus) => {
   });
 };
 
-(f, t, m) => {
+(decode, f, t, m) => {
   // console.log('message', f, t, m);
   // look for twitter link
   t.indexOf('https://twitter.com') > -1 &&
@@ -40,7 +41,7 @@ const twit = (m, thus) => {
   t.indexOf('status') > -1 &&
     getTweet(t.slice(t.indexOf('status/') + 7, t.indexOf('?') !== -1 ? t.indexOf('?') : t.length).split(' ')[0], this)
       .then(tweet => {
-        config.blurt && this.irc.say(m.args[0], tweet);
+        config.blurt && this.irc.say(m.args[0], decode(tweet));
       });
   // look for 'reply'
   false && m.indexOf('treply') === 0 &&

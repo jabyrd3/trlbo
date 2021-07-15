@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/jabyrd3/tempdoug#readme",
   "dependencies": {
+    "html-entities": "^2.3.2",
     "irc": "^0.5.2",
     "lodash.debounce": "^4.0.8",
     "mastodon": "^1.2.2",
