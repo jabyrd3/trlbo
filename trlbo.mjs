@@ -29,6 +29,9 @@ class Trlbo{
     });
     this.irc.addListener('error', (e) => {
       console.log(e);
+      this.irc = new irc.Client(config.ircs, config.ircn, {
+        channels: config.chan
+      });
     });
     this.irc.addListener('invite', () => {
       console.log('bot invited');

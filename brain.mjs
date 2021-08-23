@@ -9,7 +9,6 @@ const getTweet = (id, thus) => {
     thus.tClient
       .get(`/statuses/show/${id}`, params)
       .then((t) => {
-        console.log('debug foo', t);
         t && console.log('tweet', t.full_text);
         thus.last = t;
         // todo: cache id here for reply with @handle
@@ -32,7 +31,6 @@ const twit = (m, thus) => {
     });
   });
 };
-
 (decode, f, t, m) => {
   // console.log('message', f, t, m);
   // look for twitter link
@@ -52,7 +50,7 @@ const twit = (m, thus) => {
       .then(() => this.irc.say(config.chan, config.ircn + ' got em') && console.log(config.ircn))
       .catch(e => this.irc.say(config.chan, (e[0] && e[0].message) || e));
   // look for twits
-  t.indexOf('ttwit') === 0 &&
+  t.indexOf('twit') === 0 &&
   config.ignore.indexOf(f) === -1 &&
   f.indexOf(config.ircn) === -1 &&
   f.indexOf(config.sn) === -1 &&
@@ -68,7 +66,17 @@ const twit = (m, thus) => {
     console.log('turning blurt off');
     config.blurt = false;
   }
-  if (t.indexOf('toot') === 0){
-    mastPost(m.slice('toot'.length + 1, m.length));
+  if(t.indexOf('sup') === 0 && t.split(' ').length === 2){
+    const sn = t.split(' ')[1]
+    this.tClient.get('statuses/user_timeline', {
+      screen_name: sn,
+      include_rts: 1,
+      count: 1
+    })
+      .then(tl => {
+        console.log(m.args, tl[0].text)
+        this.irc.say(m.args[0], `@${sn}: ${decode(tl[0].text)}`)
+      })
+      .catch(e => console.error(`latest tweet lookup failed`, e))
   }
 };
